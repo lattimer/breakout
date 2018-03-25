@@ -1,10 +1,10 @@
 var canvas = document.getElementById("boCanvas");
 var ctx = canvas.getContext("2d");
 
-var xVel = (Math.floor(Math.random() * 12)) - 6;
-var yVel = (Math.floor(Math.random() * 12)) - 6;
-var xPos = 40;
-var yPos = 40;
+var xVel; 
+var yVel; 
+var xPos; 
+var yPos; 
 var boxArr = [];
 var xPad = 100;
 var yPad = 440;
@@ -34,8 +34,11 @@ function draw() {
     if (xPos < 0 || xPos > 640 ) {
         xVel = -xVel;
     }
-    if (yPos < 0 || yPos > 480) {
+    if (yPos < 0) {
         yVel = -yVel;
+    }
+    if (yPos > 480) {
+        initBall();
     }
     drawBox();  
     drawPaddle();      
@@ -119,8 +122,16 @@ function keyUpHandler(event) {
     }
 }
 
+function initBall() {
+    xVel = (Math.floor(Math.random() * 12)) - 6;
+    yVel = (Math.floor(Math.random() * 12)) - 6;
+    xPos = 40;
+    yPos = 40;
+}
+
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
-initBoxes(100);
-setInterval(draw, 17);
+initBall();
+initBoxes(30);
+var drawID = setInterval(draw, 17);
 
