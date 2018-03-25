@@ -6,13 +6,18 @@ var yVel = (Math.floor(Math.random() * 12)) - 6;
 var xPos = 40;
 var yPos = 40;
 var boxArr = [];
+var xPad = 100;
+var yPad = 440;
+var xPadSize = 100;
+var yPadSize = 10;
+var rightPressed = false;
+var leftPressed = false;
 
 // ctx.beginPath();
 // ctx.rect(40,40, 40, 40);
 // ctx.fillStyle ="#FFFFFF";
 // ctx.fill();
 // ctx.closePath();
-
 
 function draw() {
 
@@ -32,7 +37,8 @@ function draw() {
     if (yPos < 0 || yPos > 480) {
         yVel = -yVel;
     }
-    drawBox();        
+    drawBox();  
+    drawPaddle();      
 }
 
 function drawBox() {
@@ -60,6 +66,29 @@ function drawBox() {
     
 }
 
+function drawPaddle() {
+    if (rightPressed && xPad + xPadSize < 640) {
+        xPad += 5;
+    }
+    if (leftPressed && xPad > 0) {
+        xPad -= 5;
+    }
+    if ((xPos > xPad) && (xPos < (xPad + xPadSize)) && ((yPos + 5) > yPad) && ((yPos - 5) < (yPad + yPadSize))) {
+        yVel = -yVel;
+        if (rightPressed) {
+            xVel += 2;
+        }
+        if (leftPressed) {
+            xVel -= 2;
+        }
+    }
+    ctx.beginPath();
+    ctx.rect(xPad, yPad, xPadSize, yPadSize);
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fill();
+    ctx.closePath();
+}
+
 function initBoxes(n) {
 
     for (i = 0; i < n; i++) {
@@ -72,6 +101,26 @@ function initBoxes(n) {
     }
 }
 
+function keyDownHandler(event) {
+    if (event.keyCode == 39) {
+        rightPressed = true;
+    }
+    else if (event.keyCode == 37) {
+        leftPressed = true;
+    }
+}
+
+function keyUpHandler(event) {
+    if (event.keyCode == 39) {
+        rightPressed = false;
+    }
+    else if (event.keyCode == 37) {
+        leftPressed = false;
+    }
+}
+
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
 initBoxes(100);
 setInterval(draw, 17);
 
