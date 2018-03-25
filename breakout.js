@@ -10,7 +10,7 @@ var ballArr = [];
 var xPad = 100;
 var yPad = 440;
 var xPadSize = 100;
-var yPadSize = 10;
+var yPadSize = 5;
 var rightPressed = false;
 var leftPressed = false;
 
@@ -37,7 +37,7 @@ function draw() {
         }
         if (ballArr[i].yPos > 480) {
             ballArr[i].xVel = (Math.floor(Math.random() * 12)) - 6,
-            ballArr[i].yVel = (Math.floor(Math.random() * 12)) - 6,
+            ballArr[i].yVel = ((Math.floor(Math.random() * 3)) + 4) * -1,
             ballArr[i].xPos = (Math.floor(Math.random() * 630)) + 1,
             ballArr[i].yPos = 40
         }
@@ -78,7 +78,7 @@ function drawPaddle() {
         xPad -= 5;
     }
     for (var i = 0; i < ballArr.length; i++) {
-        if ((ballArr[i].xPos > xPad) && (ballArr[i].xPos < (xPad + xPadSize)) && ((ballArr[i].yPos + 5) > yPad) && ((ballArr[i].yPos - 5) < (yPad + yPadSize))) {
+        if ((ballArr[i].xPos > xPad) && (ballArr[i].xPos < (xPad + xPadSize)) && ((ballArr[i].yPos + 5) > yPad) && ((ballArr[i].yPos - 3) < (yPad + yPadSize))) {
             ballArr[i].yVel = -ballArr[i].yVel;
             if (rightPressed) {
                 ballArr[i].xVel += 2;
@@ -129,7 +129,7 @@ function initBall(n) {
     for (i = 0; i < n; i ++) {
         ball = {
             xVel: (Math.floor(Math.random() * 12)) - 6,
-            yVel: (Math.floor(Math.random() * 12)) - 6,
+            yVel: ((Math.floor(Math.random() * 3)) + 4) * -1,
             xPos: (Math.floor(Math.random() * 630)) + 1,
             yPos: 40
         }
