@@ -1,5 +1,10 @@
 var canvas = document.getElementById("boCanvas");
 var ctx = canvas.getContext("2d");
+var score = document.getElementById("score");
+var lives = document.getElementById("lives");
+
+console.log(score.textContent);
+console.log(lives.textContent);
 
 var xVel; 
 var yVel; 
@@ -13,6 +18,8 @@ var xPadSize = 100;
 var yPadSize = 5;
 var rightPressed = false;
 var leftPressed = false;
+var playerLives = 3;
+var playerScore = 0;
 
 // ctx.beginPath();
 // ctx.rect(40,40, 40, 40);
@@ -36,10 +43,18 @@ function draw() {
             ballArr[i].yVel = -ballArr[i].yVel;
         }
         if (ballArr[i].yPos > 480) {
-            ballArr[i].xVel = (Math.floor(Math.random() * 12)) - 6,
-            ballArr[i].yVel = ((Math.floor(Math.random() * 3)) + 4) * -1,
-            ballArr[i].xPos = (Math.floor(Math.random() * 630)) + 1,
-            ballArr[i].yPos = 40
+            ballArr.splice(i, 1);
+            // initBall(1);
+            if (ballArr.length == 0) {
+                if (playerLives == 0) {
+                    clearInterval(drawID);
+                } else {
+                    initBall(2);
+                    playerLives -= 1;
+                    var temp = "Lives: " + playerLives;
+                    lives.textContent = temp;
+                }
+            }
         }
     }
     drawBox();  
@@ -62,9 +77,15 @@ function drawBox() {
             if ((((ballArr[j].xPos + 5) > boxArr[i].xl) && ((ballArr[j].xPos - 5) < (boxArr[i].xl + 40)) && (ballArr[j].yPos > boxArr[i].yl) && (ballArr[j].yPos < (boxArr[i].yl + 20))) && boxArr[i].isActive) {
                 ballArr[j].xVel = -ballArr[j].xVel;
                 boxArr[i].isActive = false;
+                playerScore += 100;
+                var temp = "Score: " + playerScore;
+                score.textContent = temp;
             } else if (((ballArr[j].xPos > boxArr[i].xl) && (ballArr[j].xPos < (boxArr[i].xl + 40)) && ((ballArr[j].yPos + 5) > boxArr[i].yl) && ((ballArr[j].yPos - 5) < (boxArr[i].yl + 20))) && boxArr[i].isActive) {
                 ballArr[j].yVel = -ballArr[j].yVel;
                 boxArr[i].isActive = false;
+                playerScore += 100;
+                var temp = "Score: " + playerScore;
+                score.textContent = temp;
             }
         }
     }
@@ -149,7 +170,7 @@ function drawBall() {
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
-initBall(5);
+initBall(1);
 initBoxes(30);
 var drawID = setInterval(draw, 17);
 
